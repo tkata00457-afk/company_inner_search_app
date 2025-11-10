@@ -1,0 +1,4 @@
+[ERROR] 2025-11-10 20:48:11,152 line 44, in <module>, session_id=edaa64aea5d44bd69d5cff44cc2d2389: 初期化処理に失敗しました。
+No module named 'bs4'
+[ERROR] 2025-11-10 20:48:19,712 line 44, in <module>, session_id=edaa64aea5d44bd69d5cff44cc2d2389: 初期化処理に失敗しました。
+No module named 'bs4'

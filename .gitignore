@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+.venv*/
+venv/
+
+# Secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# DB / キャッシュ（必要なら調整）
+*.sqlite3
+*.db
+.db/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode（設定だけ残す場合）
+.vscode/*
+!.vscode/settings.json
