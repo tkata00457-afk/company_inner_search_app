@@ -1,3 +1,32 @@
+import os
+import streamlit as st
+
+# .env 読み込み（ローカル用）
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ModuleNotFoundError:
+    pass
+
+def get_secret(name: str) -> str:
+    # 1) まず環境変数
+    v = os.getenv(name)
+    if v:
+        return v.strip()
+    # 2) 次に st.secrets（secrets.toml が無い場合に備えて try）
+    try:
+        v = st.secrets.get(name)  # ここで secrets.toml が無いと例外→exceptで無視
+    except Exception:
+        v = None
+    return (v or "").strip()
+
+OPENAI_API_KEY = get_secret("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    st.error("APIキーが設定されていません。 .env か .streamlit/secrets.toml に OPENAI_API_KEY を入れてください。")
+    st.stop()
+
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
 """
 このファイルは、Webアプリのメイン処理が記述されたファイルです。
 """
@@ -36,16 +65,18 @@ logger = logging.getLogger(ct.LOGGER_NAME)
 ############################################################
 # 3. 初期化処理
 ############################################################
+import traceback  # 追加
+
 try:
-    # 初期化処理（「initialize.py」の「initialize」関数を実行）
     initialize()
 except Exception as e:
-    # エラーログの出力
-    logger.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n{e}")
-    # エラーメッセージの画面表示
+    # ここで中身を可視化（画面＆ログ）
+    logger.exception(e)
     st.error(utils.build_error_message(ct.INITIALIZE_ERROR_MESSAGE), icon=ct.ERROR_ICON)
-    # 後続の処理を中断
+    st.exception(e)  # スタック概要を画面表示
+    st.code(traceback.format_exc())  # フルのトレースを画面表示
     st.stop()
+
 
 # アプリ起動時のログファイルへの出力
 if not "initialized" in st.session_state:

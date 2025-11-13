@@ -1,19 +1,26 @@
 """
 このファイルは、画面表示以外の様々な関数定義のファイルです。
 """
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ModuleNotFoundError:
+    pass
 
 ############################################################
 # ライブラリの読み込み
 ############################################################
 import os
-from dotenv import load_dotenv
 import streamlit as st
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema import HumanMessage
+
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
+
 import constants as ct
+
 
 
 ############################################################
